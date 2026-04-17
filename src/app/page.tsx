@@ -1,65 +1,75 @@
-import Image from "next/image";
+import type { ReactNode } from "react";
+import { Box } from "@/components/Box";
+import { Cursor } from "@/components/Cursor";
+import { Field } from "@/components/Field";
+import { RecentList } from "@/components/RecentList";
+import { listPosts } from "@/lib/posts";
+import { projects } from "@/content/projects";
+import { site } from "@/content/site";
 
-export default function Home() {
-  return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+const banner = `
+   \`7MMF'                                              \`7MM"""Yb.
+     MM                                                  MM    \`Yb.
+     MM  ,6"Yb.  \`7MMpMMMb.pMMMb.  .gP"Ya  ,pP"Ybd       MM     \`Mb  ,pW"Wq.\`7MMpMMMb.  .P"Ybmmm
+     MM 8)   MM    MM    MM    MM ,M'   Yb 8I   \`"       MM      MM 6W'   \`Wb MM    MM :MI  I8
+     MM  ,pm9MM    MM    MM    MM 8M"""""" \`YMMMa.       MM     ,MP 8M     M8 MM    MM  WmmmP"
+(O)  MM 8M   MM    MM    MM    MM YM.    , L.   I8       MM    ,dP' YA.   ,A9 MM    MM 8M
+ Ymmm9  \`Moo9^Yo..JMML  JMML  JMML.\`Mbmmd' M9mmmP'     .JMMmmmdP'    \`Ybmd9'.JMML  JMML.YMMMMMb
+                                                                                       6'     dP
+                                                                                       Ybmmmd'
+`;
+
+export default async function HomePage(): Promise<ReactNode> {
+    const posts = await listPosts();
+    return (
+        <div className="flex flex-col gap-8">
+            <section>
+                <pre className="overflow-x-auto whitespace-pre text-[9px] leading-[1.1] text-fg sm:text-[11px] md:text-2xs">
+                    {banner}
+                </pre>
+                <p className="mt-2 text-sm text-fg-dim">
+                    <span className="text-fg-muted">$</span> whoami — software engineer / {site.location} / building calm software.
+                </p>
+                <p className="text-sm">
+                    <span className="text-fg-muted">$</span> <Cursor />
+                </p>
+            </section>
+
+            <Box title="BIO">
+                <ul className="flex flex-col gap-1 text-base">
+                    {site.bio.map((line) => (
+                        <li key={line}>
+                            <span className="text-fg-muted">&gt; </span>
+                            {line}
+                        </li>
+                    ))}
+                </ul>
+            </Box>
+
+            <Box title="META">
+                <div className="flex flex-col gap-1">
+                    <Field label="EMAIL">
+                        <a href={`mailto:${site.email}`}>{site.email}</a>
+                    </Field>
+                    {site.socials.map((s) => (
+                        <Field key={s.label} label={s.label}>
+                            <a href={s.href} target="_blank" rel="noreferrer noopener">
+                                {s.value}
+                            </a>
+                        </Field>
+                    ))}
+                    <Field label="LOCATION">{site.location}</Field>
+                    <Field label="TZ">{site.timezone}</Field>
+                </div>
+            </Box>
+
+            <Box title="RECENT">
+                <RecentList posts={posts} projects={projects} />
+            </Box>
+
+            <p className="text-xs text-fg-muted">
+                {"// end of file. Press F10 to exit."}
+            </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    );
 }
