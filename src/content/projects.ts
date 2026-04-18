@@ -2,6 +2,7 @@ import type { Project } from "@/lib/types";
 
 export const projects: Project[] = [
     {
+        slug: "cuelock",
         year: 2025,
         name: "cuelock",
         tags: ["nextjs", "python", "ai", "integrations"],
@@ -9,6 +10,7 @@ export const projects: Project[] = [
         description: "Current main project. Expansion based NRR software for CSMs.",
     },
     {
+        slug: "harloop",
         year: 2025,
         name: "harloop",
         tags: ["martech", "nextjs", "postgres"],
@@ -16,13 +18,15 @@ export const projects: Project[] = [
         description: "Add short form content to your site with one click",
     },
     {
+        slug: "etsy-auto-dropshipper",
         year: 2024,
-        name: "etsy dropshipper",
+        name: "etsy auto-dropshipper",
         tags: ["chromium", "dropship", "vite"],
         links: [{ href: "https://github.com/james-j-dong/Etsy-Chrome-Extension" }],
         description: "Automated dropshipping tool with gpt 3.5, net 200k. Got banned.",
     },
     {
+        slug: "sprout",
         year: 2022,
         name: "sprout",
         tags: ["machine learning", "UT", "XGBoost"],

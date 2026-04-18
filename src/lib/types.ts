@@ -17,6 +17,7 @@ export type ProjectLink = {
 };
 
 export type Project = {
+    slug: string;
     year: number;
     name: string;
     tags: string[];

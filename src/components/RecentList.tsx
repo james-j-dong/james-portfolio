@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ClickableRow } from "@/components/ClickableRow";
 import type { FeedItem, Post, Project } from "@/lib/types";
 
 type RecentListProps = {
@@ -21,7 +22,7 @@ function mergeFeed(posts: Post[], projects: Project[]): FeedItem[] {
         kind: "PROJ",
         name: p.name,
         tags: p.tags,
-        href: p.links?.[0]?.href ?? "/work",
+        href: `/work/${p.slug}`,
     }));
     return [...postItems, ...projectItems].sort((a, b) =>
         a.date < b.date ? 1 : -1,
@@ -44,7 +45,7 @@ export function RecentList({ posts, projects, limit = 5 }: RecentListProps): Rea
                 </thead>
                 <tbody>
                     {items.map((item) => (
-                        <tr key={`${item.kind}:${item.href}`} className="hover:bg-bg-raised">
+                        <ClickableRow key={`${item.kind}:${item.href}`} href={item.href}>
                             <td className="py-1 pr-2 text-fg-dim">{item.date}</td>
                             <td className="py-1 pr-2 text-fg-muted">{item.kind}</td>
                             <td className="py-1 pr-2">
@@ -52,7 +53,7 @@ export function RecentList({ posts, projects, limit = 5 }: RecentListProps): Rea
                             </td>
                             <td className="py-1 pr-2 text-fg-dim">{item.tags.join(", ")}</td>
                             <td className="py-1 text-right text-fg-dim">→</td>
-                        </tr>
+                        </ClickableRow>
                     ))}
                 </tbody>
             </table>
