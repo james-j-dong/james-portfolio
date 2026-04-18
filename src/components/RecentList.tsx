@@ -21,7 +21,7 @@ function mergeFeed(posts: Post[], projects: Project[]): FeedItem[] {
         kind: "PROJ",
         name: p.name,
         tags: p.tags,
-        href: p.link ?? "/work",
+        href: p.links?.[0]?.href ?? "/work",
     }));
     return [...postItems, ...projectItems].sort((a, b) =>
         a.date < b.date ? 1 : -1,

@@ -5,8 +5,7 @@ type ProjectsTableProps = {
     projects: Project[];
 };
 
-function linkLabel(href: string | undefined): string {
-    if (!href) return "—";
+function hostnameLabel(href: string): string {
     try {
         const url = new URL(href);
         return url.hostname.replace(/^www\./, "");
@@ -39,10 +38,20 @@ export function ProjectsTable({ projects }: ProjectsTableProps): ReactNode {
                             </td>
                             <td className="py-1 pr-2 text-fg-dim">{p.tags.join(", ")}</td>
                             <td className="py-1 text-right">
-                                {p.link ? (
-                                    <a href={p.link} target="_blank" rel="noreferrer noopener">
-                                        {linkLabel(p.link)} ↗
-                                    </a>
+                                {p.links && p.links.length > 0 ? (
+                                    p.links.map((link, index) => (
+                                        <div key={link.href + index}>
+                                            <a 
+                                                href={link.href}
+                                                target="_blank"
+                                                rel="noreferrer noopener"
+                                                className="whitespace-nowrap"
+                                            >
+                                                {link.label ?? hostnameLabel(link.href)}
+                                                <span aria-hidden="true" className="ml-1">↗</span>
+                                            </a>
+                                        </div>
+                                    ))
                                 ) : (
                                     <span className="text-fg-muted">—</span>
                                 )}

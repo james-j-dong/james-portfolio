@@ -20,16 +20,14 @@ export const site: SiteConfig = {
     handle: "jamesdong",
     hostname: "jamesdong.dev",
     bio: [
-        "Software engineer.",
-        "Based in ___.",
-        "Building calm, fast software.",
+        "Software engineer based in Austin, TX.",
+        "Building calm, fast software — tools that get out of the way.",
     ],
-    location: "___",
-    timezone: "UTC",
-    email: "jamesjd1024@gmail.com",
+    location: "Austin, TX",
+    timezone: "America/Chicago",
+    email: "jamesdong00@gmail.com",
     socials: [
-        { label: "GITHUB", value: "/jamesdong", href: "https://github.com/" },
-        { label: "X", value: "/jamesdong", href: "https://x.com/" },
-        { label: "RSS", value: "/feed.xml", href: "/feed.xml" },
+        { label: "GITHUB", value: "/james-j-dong", href: "https://github.com/james-j-dong" },
+        { label: "LINKEDIN", value: "/in/james-dong-1024", href: "https://www.linkedin.com/in/james-dong-1024" },
     ],
 };

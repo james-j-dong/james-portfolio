@@ -11,11 +11,16 @@ export type Post = {
     html: string;
 };
 
+export type ProjectLink = {
+    href: string;
+    label?: string;
+};
+
 export type Project = {
     year: number;
     name: string;
     tags: string[];
-    link?: string;
+    links?: ProjectLink[];
     description?: string;
 };
 
