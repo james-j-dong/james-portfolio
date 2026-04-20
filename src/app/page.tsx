@@ -1,9 +1,10 @@
 import type { ReactNode } from "react";
 import { Box } from "@/components/Box";
-import { Cursor } from "@/components/Cursor";
 import { Field } from "@/components/Field";
 import { RecentList } from "@/components/RecentList";
+import { Terminal } from "@/components/Terminal";
 import { listPosts } from "@/lib/posts";
+import { buildVirtualFs } from "@/lib/virtual-fs";
 import { projects } from "@/content/projects";
 import { site } from "@/content/site";
 
@@ -20,7 +21,7 @@ const banner = `
 `;
 
 export default async function HomePage(): Promise<ReactNode> {
-  const posts = await listPosts();
+  const [posts, fs] = await Promise.all([listPosts(), buildVirtualFs()]);
   return (
     <div className="flex flex-col gap-8">
       <section>
@@ -31,8 +32,9 @@ export default async function HomePage(): Promise<ReactNode> {
           <span className="text-fg-muted">$</span> whoami — software engineer /{" "}
           {site.location} / building calm software.
         </p>
-        <p className="text-sm">
-          <span className="text-fg-muted">$</span> <Cursor />
+        <Terminal fs={fs} user={site.handle} host={site.hostname} />
+        <p className="text-fg-muted mt-1 text-xs">
+          {"// type `help` to get started"}
         </p>
       </section>
 

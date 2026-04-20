@@ -19,7 +19,7 @@ export function TopBar(): ReactNode {
         {site.name} <span className="text-fg-dim">{"// PORTFOLIO"}</span>
       </span>
       <span className="text-fg-muted hidden md:inline">
-        HOST:{site.hostname} USER:visitor SHELL:next@{version}
+        HOST:{site.hostname} USER:visitor RUNTIME:next@{version}
       </span>
       <Clock />
     </header>

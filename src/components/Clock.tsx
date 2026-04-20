@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 
 const PLACEHOLDER = "---------- --:--:-- UTC";
@@ -16,14 +16,26 @@ function formatNow(): string {
   return `${y}-${mo}-${d} ${h}:${mi}:${s} UTC`;
 }
 
+let cachedTime: string = PLACEHOLDER;
+
+function subscribe(callback: () => void): () => void {
+  cachedTime = formatNow();
+  const id = setInterval(() => {
+    cachedTime = formatNow();
+    callback();
+  }, 1000);
+  return () => clearInterval(id);
+}
+
+function getSnapshot(): string {
+  return cachedTime;
+}
+
+function getServerSnapshot(): string {
+  return PLACEHOLDER;
+}
+
 export function Clock(): ReactNode {
-  const [time, setTime] = useState<string>(PLACEHOLDER);
-
-  useEffect(() => {
-    setTime(formatNow());
-    const id = setInterval(() => setTime(formatNow()), 1000);
-    return () => clearInterval(id);
-  }, []);
-
+  const time = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   return <span className="text-fg-dim tabular-nums">{time}</span>;
 }
