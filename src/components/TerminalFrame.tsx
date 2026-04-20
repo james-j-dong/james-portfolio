@@ -1,15 +1,15 @@
 import type { ReactNode } from "react";
 
 type TerminalFrameProps = {
-    children: ReactNode;
+  children: ReactNode;
 };
 
 export function TerminalFrame({ children }: TerminalFrameProps): ReactNode {
-    return (
-        <div className="min-h-screen">
-            <div className="mx-auto flex min-h-screen max-w-[100ch] flex-col border-x border-fg-faint">
-                {children}
-            </div>
-        </div>
-    );
+  return (
+    <div className="min-h-screen">
+      <div className="border-fg-faint mx-auto flex min-h-screen max-w-[100ch] flex-col border-x">
+        {children}
+      </div>
+    </div>
+  );
 }

@@ -1,33 +1,34 @@
 export type PostFrontmatter = {
-    title: string;
-    date: string;
-    tags: string[];
-    summary: string;
+  title: string;
+  date: string;
+  tags: string[];
+  summary: string;
 };
 
 export type Post = {
-    slug: string;
-    frontmatter: PostFrontmatter;
-    html: string;
+  slug: string;
+  frontmatter: PostFrontmatter;
+  html: string;
 };
 
 export type ProjectLink = {
-    href: string;
-    label?: string;
+  href: string;
+  label?: string;
 };
 
 export type Project = {
-    year: number;
-    name: string;
-    tags: string[];
-    links?: ProjectLink[];
-    description?: string;
+  slug: string;
+  year: number;
+  name: string;
+  tags: string[];
+  links?: ProjectLink[];
+  description?: string;
 };
 
 export type FeedItem = {
-    date: string;
-    kind: "POST" | "PROJ";
-    name: string;
-    tags: string[];
-    href: string;
+  date: string;
+  kind: "POST" | "PROJ";
+  name: string;
+  tags: string[];
+  href: string;
 };
