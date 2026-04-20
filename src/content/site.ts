@@ -17,7 +17,7 @@ export type SiteConfig = {
 
 export const site: SiteConfig = {
   name: "JAMES DONG",
-  handle: "jamesdong",
+  handle: "vistor",
   hostname: "jamesdong.dev",
   bio: [
     "Software engineer based in Austin, TX.",
