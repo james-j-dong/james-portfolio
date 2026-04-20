@@ -20,56 +20,57 @@ const banner = `
 `;
 
 export default async function HomePage(): Promise<ReactNode> {
-    const posts = await listPosts();
-    return (
-        <div className="flex flex-col gap-8">
-            <section>
-                <pre className="overflow-x-auto whitespace-pre text-[9px] leading-[1.1] text-fg sm:text-[11px] md:text-2xs">
-                    {banner}
-                </pre>
-                <p className="mt-2 text-sm text-fg-dim">
-                    <span className="text-fg-muted">$</span> whoami — software engineer / {site.location} / building calm software.
-                </p>
-                <p className="text-sm">
-                    <span className="text-fg-muted">$</span> <Cursor />
-                </p>
-            </section>
+  const posts = await listPosts();
+  return (
+    <div className="flex flex-col gap-8">
+      <section>
+        <pre className="text-fg md:text-2xs overflow-x-auto text-[9px] leading-[1.1] whitespace-pre sm:text-[11px]">
+          {banner}
+        </pre>
+        <p className="text-fg-dim mt-2 text-sm">
+          <span className="text-fg-muted">$</span> whoami — software engineer /{" "}
+          {site.location} / building calm software.
+        </p>
+        <p className="text-sm">
+          <span className="text-fg-muted">$</span> <Cursor />
+        </p>
+      </section>
 
-            <Box title="BIO">
-                <ul className="flex flex-col gap-1 text-base">
-                    {site.bio.map((line) => (
-                        <li key={line}>
-                            <span className="text-fg-muted">&gt; </span>
-                            {line}
-                        </li>
-                    ))}
-                </ul>
-            </Box>
+      <Box title="BIO">
+        <ul className="flex flex-col gap-1 text-base">
+          {site.bio.map((line) => (
+            <li key={line}>
+              <span className="text-fg-muted">&gt; </span>
+              {line}
+            </li>
+          ))}
+        </ul>
+      </Box>
 
-            <Box title="META">
-                <div className="flex flex-col gap-1">
-                    <Field label="EMAIL">
-                        <a href={`mailto:${site.email}`}>{site.email}</a>
-                    </Field>
-                    {site.socials.map((s) => (
-                        <Field key={s.label} label={s.label}>
-                            <a href={s.href} target="_blank" rel="noreferrer noopener">
-                                {s.value}
-                            </a>
-                        </Field>
-                    ))}
-                    <Field label="LOCATION">{site.location}</Field>
-                    <Field label="TZ">{site.timezone}</Field>
-                </div>
-            </Box>
-
-            <Box title="RECENT">
-                <RecentList posts={posts} projects={projects} />
-            </Box>
-
-            <p className="text-xs text-fg-muted">
-                {"// end of file. Press F10 to exit."}
-            </p>
+      <Box title="META">
+        <div className="flex flex-col gap-1">
+          <Field label="EMAIL">
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+          </Field>
+          {site.socials.map((s) => (
+            <Field key={s.label} label={s.label}>
+              <a href={s.href} target="_blank" rel="noreferrer noopener">
+                {s.value}
+              </a>
+            </Field>
+          ))}
+          <Field label="LOCATION">{site.location}</Field>
+          <Field label="TZ">{site.timezone}</Field>
         </div>
-    );
+      </Box>
+
+      <Box title="RECENT">
+        <RecentList posts={posts} projects={projects} />
+      </Box>
+
+      <p className="text-fg-muted text-xs">
+        {"// end of file. Press F10 to exit."}
+      </p>
+    </div>
+  );
 }

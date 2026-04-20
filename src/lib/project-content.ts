@@ -6,17 +6,19 @@ import { parseFrontmatter, renderBlocks } from "@/lib/markdown";
 const PROJECTS_DIR = path.join(process.cwd(), "src", "content", "projects");
 
 export type ProjectContent = {
-    html: string;
+  html: string;
 };
 
-export const getProjectContent = cache(async (slug: string): Promise<ProjectContent | null> => {
+export const getProjectContent = cache(
+  async (slug: string): Promise<ProjectContent | null> => {
     const filePath = path.join(PROJECTS_DIR, `${slug}.md`);
     let raw: string;
     try {
-        raw = await fs.readFile(filePath, "utf8");
+      raw = await fs.readFile(filePath, "utf8");
     } catch {
-        return null;
+      return null;
     }
     const { body } = parseFrontmatter(raw);
     return { html: renderBlocks(body) };
-});
+  },
+);
