@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
-import { parseFrontmatter, renderBlocks } from "@/lib/markdown";
+import { parseFrontmatter, renderMarkdown } from "@/lib/markdown";
 import type { Post, PostFrontmatter } from "@/lib/types";
 
 const LOG_DIR = path.join(process.cwd(), "src", "content", "log");
@@ -36,7 +36,7 @@ export const listPosts = cache(async (): Promise<Post[]> => {
       return {
         slug: filenameToSlug(filename),
         frontmatter: toPostFrontmatter(data),
-        html: renderBlocks(body),
+        html: await renderMarkdown(body),
       };
     }),
   );
