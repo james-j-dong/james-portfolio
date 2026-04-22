@@ -106,11 +106,86 @@ a:hover {
 
 .prose-terminal ul {
   padding-left: 2ch;
+  list-style: none;
 }
 
 .prose-terminal ul > li::before {
   content: "- ";
   color: var(--color-fg-muted);
+}
+
+.prose-terminal ol {
+  padding-left: 2ch;
+  list-style: none;
+  counter-reset: ol-counter;
+}
+
+.prose-terminal ol > li {
+  counter-increment: ol-counter;
+}
+
+.prose-terminal ol > li::before {
+  content: counter(ol-counter) ". ";
+  color: var(--color-fg-muted);
+}
+
+.prose-terminal ol ol > li::before {
+  content: counter(ol-counter, lower-alpha) ". ";
+}
+
+.prose-terminal ol ol ol > li::before {
+  content: counter(ol-counter, lower-roman) ". ";
+}
+
+.prose-terminal li > ul,
+.prose-terminal li > ol {
+  margin-top: 0.25em;
+}
+
+.prose-terminal em {
+  color: var(--color-fg-dim);
+  font-style: italic;
+}
+
+.prose-terminal hr {
+  border: 0;
+  border-top: 1px solid var(--color-fg-faint);
+  margin: 1em 0;
+}
+
+.prose-terminal blockquote {
+  border-left: 2px solid var(--color-fg-faint);
+  padding-left: 1ch;
+  margin-left: 0;
+  color: var(--color-fg-dim);
+}
+
+.prose-terminal table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--color-fg-faint);
+}
+
+.prose-terminal th,
+.prose-terminal td {
+  border: 1px solid var(--color-fg-faint);
+  padding: 0.25em 1ch;
+  text-align: left;
+}
+
+.prose-terminal th {
+  background: var(--color-bg-raised);
+  color: var(--color-fg);
+}
+
+.prose-terminal img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--color-fg-faint);
+}
+
+.prose-terminal pre.shiki {
+  background: var(--color-bg-raised) !important;
 }
 
 .prose-terminal a {

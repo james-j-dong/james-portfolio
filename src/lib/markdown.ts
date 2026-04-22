@@ -1,4 +1,7 @@
-export function escapeHtml(s: string): string {
+import { Marked, type Token, type Tokens } from "marked";
+import { createHighlighter, type Highlighter } from "shiki";
+
+function escapeHtml(s: string): string {
   return s
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -7,78 +10,82 @@ export function escapeHtml(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
-export function safeUrl(url: string): string {
+function safeUrl(url: string): string {
   if (/^(https?:|mailto:|\/|#)/.test(url)) return url;
   return "#";
 }
 
-export function renderInline(text: string): string {
-  let out = escapeHtml(text);
-  out = out.replace(/`([^`]+)`/g, (_, code: string) => `<code>${code}</code>`);
-  out = out.replace(
-    /\[([^\]]+)\]\(([^)\s]+)\)/g,
-    (_, label: string, url: string) => `<a href="${safeUrl(url)}">${label}</a>`,
-  );
-  out = out.replace(
-    /\*\*([^*]+)\*\*/g,
-    (_, s: string) => `<strong>${s}</strong>`,
-  );
-  return out;
+const SHIKI_THEME = "github-dark-dimmed";
+const SHIKI_LANGS = [
+  "ts",
+  "tsx",
+  "js",
+  "jsx",
+  "python",
+  "bash",
+  "sh",
+  "json",
+  "css",
+  "html",
+  "md",
+] as const;
+
+let highlighterPromise: Promise<Highlighter> | null = null;
+function getHighlighter(): Promise<Highlighter> {
+  if (!highlighterPromise) {
+    highlighterPromise = createHighlighter({
+      themes: [SHIKI_THEME],
+      langs: [...SHIKI_LANGS],
+    });
+  }
+  return highlighterPromise;
 }
 
-export function renderBlocks(md: string): string {
-  const lines = md.split("\n");
-  const blocks: string[] = [];
-  let i = 0;
-  while (i < lines.length) {
-    const line = lines[i];
-    if (line.trim() === "") {
-      i++;
-      continue;
-    }
-    if (line.startsWith("```")) {
-      const buf: string[] = [];
-      i++;
-      while (i < lines.length && !lines[i].startsWith("```")) {
-        buf.push(lines[i]);
-        i++;
-      }
-      i++;
-      blocks.push(`<pre><code>${escapeHtml(buf.join("\n"))}</code></pre>`);
-      continue;
-    }
-    const hMatch = /^(#{1,4})\s+(.*)$/.exec(line);
-    if (hMatch) {
-      const level = hMatch[1].length;
-      const text = renderInline(hMatch[2]);
-      blocks.push(`<h${level}>${text}</h${level}>`);
-      i++;
-      continue;
-    }
-    if (/^-\s+/.test(line)) {
-      const items: string[] = [];
-      while (i < lines.length && /^-\s+/.test(lines[i])) {
-        items.push(`<li>${renderInline(lines[i].replace(/^-\s+/, ""))}</li>`);
-        i++;
-      }
-      blocks.push(`<ul>${items.join("")}</ul>`);
-      continue;
-    }
-    const buf: string[] = [line];
-    i++;
-    while (
-      i < lines.length &&
-      lines[i].trim() !== "" &&
-      !lines[i].startsWith("```") &&
-      !/^#{1,4}\s/.test(lines[i]) &&
-      !/^-\s+/.test(lines[i])
-    ) {
-      buf.push(lines[i]);
-      i++;
-    }
-    blocks.push(`<p>${renderInline(buf.join(" "))}</p>`);
-  }
-  return blocks.join("\n");
+type HighlightedCode = Tokens.Code & { _highlighted?: string };
+
+const marked = new Marked({
+  gfm: true,
+  breaks: false,
+  async: true,
+  async walkTokens(token) {
+    if (token.type !== "code") return;
+    const code = token as HighlightedCode;
+    const highlighter = await getHighlighter();
+    const lang = (code.lang || "").trim().toLowerCase();
+    const loaded = new Set<string>(highlighter.getLoadedLanguages());
+    const effectiveLang = loaded.has(lang) ? lang : "text";
+    code._highlighted = highlighter.codeToHtml(code.text, {
+      lang: effectiveLang,
+      theme: SHIKI_THEME,
+    });
+  },
+  renderer: {
+    code(token: Tokens.Code): string {
+      const code = token as HighlightedCode;
+      if (code._highlighted) return code._highlighted;
+      return `<pre><code>${escapeHtml(code.text)}</code></pre>`;
+    },
+    html(token: Tokens.HTML | Tokens.Tag): string {
+      return escapeHtml(token.text);
+    },
+    link(this: { parser: { parseInline: (tokens: Token[]) => string } }, token: Tokens.Link): string {
+      const inner = this.parser.parseInline(token.tokens);
+      const titleAttr = token.title
+        ? ` title="${escapeHtml(token.title)}"`
+        : "";
+      return `<a href="${escapeHtml(safeUrl(token.href))}"${titleAttr}>${inner}</a>`;
+    },
+    image(token: Tokens.Image): string {
+      const titleAttr = token.title
+        ? ` title="${escapeHtml(token.title)}"`
+        : "";
+      return `<img src="${escapeHtml(safeUrl(token.href))}" alt="${escapeHtml(token.text)}"${titleAttr} loading="lazy" decoding="async">`;
+    },
+  },
+});
+
+export async function renderMarkdown(body: string): Promise<string> {
+  return await marked.parse(body);
 }
 
 export type FrontmatterData = Record<string, string | string[]>;

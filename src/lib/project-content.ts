@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
-import { parseFrontmatter, renderBlocks } from "@/lib/markdown";
+import { parseFrontmatter, renderMarkdown } from "@/lib/markdown";
 
 const PROJECTS_DIR = path.join(process.cwd(), "src", "content", "projects");
 
@@ -19,6 +19,6 @@ export const getProjectContent = cache(
       return null;
     }
     const { body } = parseFrontmatter(raw);
-    return { html: renderBlocks(body) };
+    return { html: await renderMarkdown(body) };
   },
 );
