@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { Post } from "@/lib/types";
+import { ClickableRow } from "@/components/ClickableRow";
+import type { PostMeta } from "@/lib/types";
 
 type PostsTableProps = {
-  posts: Post[];
+  posts: PostMeta[];
 };
 
 export function PostsTable({ posts }: PostsTableProps): ReactNode {
@@ -28,7 +29,11 @@ export function PostsTable({ posts }: PostsTableProps): ReactNode {
         </thead>
         <tbody>
           {posts.map((post) => (
-            <tr key={post.slug} className="hover:bg-bg-raised align-top">
+            <ClickableRow
+              key={post.slug}
+              href={`/log/${post.slug}`}
+              className="align-top"
+            >
               <td className="text-fg-dim py-1 pr-2">{post.frontmatter.date}</td>
               <td className="py-1 pr-2">
                 <Link
@@ -44,7 +49,7 @@ export function PostsTable({ posts }: PostsTableProps): ReactNode {
               <td className="text-fg-dim py-1 pr-2">
                 {post.frontmatter.tags.join(", ")}
               </td>
-            </tr>
+            </ClickableRow>
           ))}
         </tbody>
       </table>

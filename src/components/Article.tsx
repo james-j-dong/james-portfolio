@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Post } from "@/lib/types";
-import { formatDate } from "@/lib/format";
 
 type ArticleProps = {
   post: Post;
@@ -14,7 +13,7 @@ export function Article({ post }: ArticleProps): ReactNode {
       <header className="border-fg-faint border-b pb-3">
         <div className="text-fg-muted flex flex-wrap gap-x-4 text-xs uppercase">
           <span>LOG/{post.slug}</span>
-          <span>{formatDate(frontmatter.date).toUpperCase()}</span>
+          <span>{frontmatter.date}</span>
           {frontmatter.tags.length > 0 ? (
             <span>TAGS: {frontmatter.tags.join(", ")}</span>
           ) : null}

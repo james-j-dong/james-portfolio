@@ -2,18 +2,17 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
 import { projects } from "@/content/projects";
+import {
+  LOG_DIR,
+  PROJECTS_DIR,
+  filenameToSlug,
+  isEnoent,
+} from "@/lib/content-fs";
 import type { Project } from "@/lib/types";
 
 export type VFile = { type: "file"; name: string; content: string };
 export type VDir = { type: "dir"; name: string; children: VEntry[] };
 export type VEntry = VFile | VDir;
-
-const LOG_DIR = path.join(process.cwd(), "src", "content", "log");
-const PROJECTS_DIR = path.join(process.cwd(), "src", "content", "projects");
-
-function filenameToSlug(filename: string): string {
-  return filename.replace(/\.md$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, "");
-}
 
 function synthesizeProjectMarkdown(project: Project): string {
   const tagLine =
@@ -35,8 +34,9 @@ async function readLogChildren(): Promise<VFile[]> {
   let entries: string[];
   try {
     entries = await fs.readdir(LOG_DIR);
-  } catch {
-    return [];
+  } catch (error) {
+    if (isEnoent(error)) return [];
+    throw error;
   }
   const files = entries.filter((f) => f.endsWith(".md"));
   const out = await Promise.all(
@@ -55,8 +55,10 @@ async function readLogChildren(): Promise<VFile[]> {
 async function readProjectFile(slug: string): Promise<string | null> {
   try {
     return await fs.readFile(path.join(PROJECTS_DIR, `${slug}.md`), "utf8");
-  } catch {
-    return null;
+  } catch (error) {
+    // Projects without a write-up are expected; anything else is a bug.
+    if (isEnoent(error)) return null;
+    throw error;
   }
 }
 

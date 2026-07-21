@@ -3,7 +3,7 @@ import { Box } from "@/components/Box";
 import { Field } from "@/components/Field";
 import { RecentList } from "@/components/RecentList";
 import { Terminal } from "@/components/Terminal";
-import { listPosts } from "@/lib/posts";
+import { listPostMeta } from "@/lib/posts";
 import { buildVirtualFs } from "@/lib/virtual-fs";
 import { projects } from "@/content/projects";
 import { site } from "@/content/site";
@@ -21,7 +21,7 @@ const banner = `
 `;
 
 export default async function HomePage(): Promise<ReactNode> {
-  const [posts, fs] = await Promise.all([listPosts(), buildVirtualFs()]);
+  const [posts, fs] = await Promise.all([listPostMeta(), buildVirtualFs()]);
   return (
     <div className="flex flex-col gap-8">
       <section>

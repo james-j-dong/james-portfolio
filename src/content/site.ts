@@ -8,6 +8,7 @@ export type SiteConfig = {
   name: string;
   handle: string;
   hostname: string;
+  url: string;
   bio: string[];
   location: string;
   timezone: string;
@@ -17,8 +18,9 @@ export type SiteConfig = {
 
 export const site: SiteConfig = {
   name: "JAMES DONG",
-  handle: "vistor",
+  handle: "visitor",
   hostname: "jamesdong.dev",
+  url: "https://jamesdong.dev",
   bio: [
     "Software engineer based in Austin, TX.",
     "Building calm, fast software — tools that get out of the way.",

@@ -1,15 +1,15 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ClickableRow } from "@/components/ClickableRow";
-import type { FeedItem, Post, Project } from "@/lib/types";
+import type { FeedItem, PostMeta, Project } from "@/lib/types";
 
 type RecentListProps = {
-  posts: Post[];
+  posts: PostMeta[];
   projects: Project[];
   limit?: number;
 };
 
-function mergeFeed(posts: Post[], projects: Project[]): FeedItem[] {
+function mergeFeed(posts: PostMeta[], projects: Project[]): FeedItem[] {
   const postItems: FeedItem[] = posts.map((p) => ({
     date: p.frontmatter.date,
     kind: "POST",

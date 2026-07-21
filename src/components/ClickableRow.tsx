@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import type { KeyboardEvent, ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 
 type ClickableRowProps = {
   href: string;
@@ -16,12 +16,11 @@ export function ClickableRow({
   const router = useRouter();
   return (
     <tr
-      onClick={() => router.push(href)}
-      onKeyDown={(e: KeyboardEvent<HTMLTableRowElement>) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          router.push(href);
-        }
+      onClick={(e: MouseEvent<HTMLTableRowElement>) => {
+        // Links inside the row (post titles, external project links)
+        // handle their own navigation.
+        if ((e.target as HTMLElement).closest("a")) return;
+        router.push(href);
       }}
       className={`hover:bg-bg-raised cursor-pointer ${className}`.trim()}
     >

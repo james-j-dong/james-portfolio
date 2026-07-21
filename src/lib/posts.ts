@@ -1,10 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
+import { LOG_DIR, filenameToSlug, isEnoent } from "@/lib/content-fs";
 import { parseFrontmatter, renderMarkdown } from "@/lib/markdown";
-import type { Post, PostFrontmatter } from "@/lib/types";
-
-const LOG_DIR = path.join(process.cwd(), "src", "content", "log");
+import type { Post, PostFrontmatter, PostMeta } from "@/lib/types";
 
 function toPostFrontmatter(
   data: Record<string, string | string[]>,
@@ -17,26 +16,27 @@ function toPostFrontmatter(
   };
 }
 
-function filenameToSlug(filename: string): string {
-  return filename.replace(/\.md$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, "");
-}
-
-export const listPosts = cache(async (): Promise<Post[]> => {
+const listLogFiles = cache(async (): Promise<string[]> => {
   let entries: string[];
   try {
     entries = await fs.readdir(LOG_DIR);
-  } catch {
-    return [];
+  } catch (error) {
+    if (isEnoent(error)) return [];
+    throw error;
   }
-  const files = entries.filter((f) => f.endsWith(".md"));
+  return entries.filter((f) => f.endsWith(".md"));
+});
+
+export const listPostMeta = cache(async (): Promise<PostMeta[]> => {
+  const files = await listLogFiles();
   const posts = await Promise.all(
-    files.map(async (filename): Promise<Post> => {
-      const raw = await fs.readFile(path.join(LOG_DIR, filename), "utf8");
-      const { data, body } = parseFrontmatter(raw);
+    files.map(async (filename): Promise<PostMeta> => {
+      const filePath = path.join(LOG_DIR, filename);
+      const raw = await fs.readFile(filePath, "utf8");
+      const { data } = parseFrontmatter(raw, filePath);
       return {
         slug: filenameToSlug(filename),
         frontmatter: toPostFrontmatter(data),
-        html: await renderMarkdown(body),
       };
     }),
   );
@@ -46,6 +46,15 @@ export const listPosts = cache(async (): Promise<Post[]> => {
 });
 
 export const getPost = cache(async (slug: string): Promise<Post | null> => {
-  const posts = await listPosts();
-  return posts.find((p) => p.slug === slug) ?? null;
+  const files = await listLogFiles();
+  const filename = files.find((f) => filenameToSlug(f) === slug);
+  if (!filename) return null;
+  const filePath = path.join(LOG_DIR, filename);
+  const raw = await fs.readFile(filePath, "utf8");
+  const { data, body } = parseFrontmatter(raw, filePath);
+  return {
+    slug,
+    frontmatter: toPostFrontmatter(data),
+    html: await renderMarkdown(body),
+  };
 });
