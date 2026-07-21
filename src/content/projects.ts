@@ -2,23 +2,23 @@ import type { Project } from "@/lib/types";
 
 export const projects: Project[] = [
   {
+    slug: "harloop",
+    year: 2025,
+    name: "harloop",
+    tags: ["video-creation", "nextjs", "postgres"],
+    links: [
+      { href: "https://harloop.com" },
+      { href: "https://github.com/james-j-dong/app-harloop" },
+    ],
+    description: "Current main project. Video Creation and distribution pipeline for individuals and businesses.",
+  },
+  {
     slug: "cuelock",
     year: 2025,
     name: "cuelock",
     tags: ["nextjs", "python", "ai", "integrations"],
     links: [{ href: "https://cuelock.com" }],
-    description: "Current main project. Expansion based NRR software for CSMs.",
-  },
-  {
-    slug: "harloop",
-    year: 2025,
-    name: "harloop",
-    tags: ["martech", "nextjs", "postgres"],
-    links: [
-      { href: "https://harloop.com" },
-      { href: "https://github.com/james-j-dong/app-harloop" },
-    ],
-    description: "Add short form content to your site with one click",
+    description: "Expansion based NRR software for CSMs.",
   },
   {
     slug: "etsy-auto-dropshipper",
