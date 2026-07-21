@@ -16,4 +16,4 @@ cuelock is an expansion-based net revenue retention (NRR) platform built for cus
 
 ## Status
 
-Active — this is my current main project.
+Archived
