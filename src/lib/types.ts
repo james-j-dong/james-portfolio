@@ -5,9 +5,12 @@ export type PostFrontmatter = {
   summary: string;
 };
 
-export type Post = {
+export type PostMeta = {
   slug: string;
   frontmatter: PostFrontmatter;
+};
+
+export type Post = PostMeta & {
   html: string;
 };
 

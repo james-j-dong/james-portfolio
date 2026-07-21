@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { Box } from "@/components/Box";
 import { Article } from "@/components/Article";
-import { getPost, listPosts } from "@/lib/posts";
+import { getPost, listPostMeta } from "@/lib/posts";
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const posts = await listPosts();
+  const posts = await listPostMeta();
   return posts.map((p) => ({ slug: p.slug }));
 }
 

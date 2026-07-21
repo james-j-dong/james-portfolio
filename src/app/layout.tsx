@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 import { TerminalFrame } from "@/components/TerminalFrame";
@@ -21,7 +21,11 @@ export const metadata: Metadata = {
     template: `%s · ${site.name}`,
   },
   description: "Personal site of James Dong — software engineer.",
-  metadataBase: new URL("https://jamesdong.dev"),
+  metadataBase: new URL(site.url),
+};
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
 };
 
 type RootLayoutProps = {

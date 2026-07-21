@@ -1,9 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
+import { PROJECTS_DIR, isEnoent } from "@/lib/content-fs";
 import { parseFrontmatter, renderMarkdown } from "@/lib/markdown";
-
-const PROJECTS_DIR = path.join(process.cwd(), "src", "content", "projects");
 
 export type ProjectContent = {
   html: string;
@@ -15,10 +14,12 @@ export const getProjectContent = cache(
     let raw: string;
     try {
       raw = await fs.readFile(filePath, "utf8");
-    } catch {
-      return null;
+    } catch (error) {
+      // Projects without a write-up are expected; anything else is a bug.
+      if (isEnoent(error)) return null;
+      throw error;
     }
-    const { body } = parseFrontmatter(raw);
+    const { body } = parseFrontmatter(raw, filePath);
     return { html: await renderMarkdown(body) };
   },
 );

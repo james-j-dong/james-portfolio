@@ -68,7 +68,10 @@ const marked = new Marked({
     html(token: Tokens.HTML | Tokens.Tag): string {
       return escapeHtml(token.text);
     },
-    link(this: { parser: { parseInline: (tokens: Token[]) => string } }, token: Tokens.Link): string {
+    link(
+      this: { parser: { parseInline: (tokens: Token[]) => string } },
+      token: Tokens.Link,
+    ): string {
       const inner = this.parser.parseInline(token.tokens);
       const titleAttr = token.title
         ? ` title="${escapeHtml(token.title)}"`
@@ -90,13 +93,16 @@ export async function renderMarkdown(body: string): Promise<string> {
 
 export type FrontmatterData = Record<string, string | string[]>;
 
-export function parseFrontmatter(raw: string): {
+export function parseFrontmatter(
+  raw: string,
+  source: string,
+): {
   data: FrontmatterData;
   body: string;
 } {
   const m = /^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/.exec(raw);
   if (!m) {
-    throw new Error("Missing frontmatter");
+    throw new Error(`Missing frontmatter in ${source}`);
   }
   const data: FrontmatterData = {};
   for (const line of m[1].split(/\r?\n/)) {
