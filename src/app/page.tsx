@@ -25,7 +25,7 @@ export default async function HomePage(): Promise<ReactNode> {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <pre className="text-fg md:text-2xs overflow-x-auto text-[9px] leading-[1.1] whitespace-pre sm:text-[11px]">
+        <pre className="text-fg md:text-2xs overflow-x-auto overflow-y-hidden text-[9px] leading-[1.1] whitespace-pre sm:text-[11px]">
           {banner}
         </pre>
         <p className="text-fg-dim mt-2 text-sm">
