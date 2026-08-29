@@ -4,6 +4,7 @@ import { cache } from "react";
 import { projects } from "@/content/projects";
 import {
   LOG_DIR,
+  ME_FILE,
   PROJECTS_DIR,
   filenameToSlug,
   isEnoent,
@@ -76,17 +77,26 @@ async function readWorkChildren(): Promise<VFile[]> {
   return out.sort((a, b) => a.name.localeCompare(b.name));
 }
 
+async function readMeFile(): Promise<VFile | null> {
+  try {
+    const raw = await fs.readFile(ME_FILE, "utf8");
+    return { type: "file", name: "me.txt", content: raw };
+  } catch (error) {
+    if (isEnoent(error)) return null;
+    throw error;
+  }
+}
+
 export const buildVirtualFs = cache(async (): Promise<VDir> => {
-  const [logChildren, workChildren] = await Promise.all([
+  const [logChildren, workChildren, meFile] = await Promise.all([
     readLogChildren(),
     readWorkChildren(),
+    readMeFile(),
   ]);
-  return {
-    type: "dir",
-    name: "",
-    children: [
-      { type: "dir", name: "log", children: logChildren },
-      { type: "dir", name: "work", children: workChildren },
-    ],
-  };
+  const children: VEntry[] = [
+    { type: "dir", name: "log", children: logChildren },
+    { type: "dir", name: "work", children: workChildren },
+  ];
+  if (meFile) children.push(meFile);
+  return { type: "dir", name: "", children };
 });

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AsciiPortrait } from "@/components/AsciiPortrait";
 import { Box } from "@/components/Box";
 import { Field } from "@/components/Field";
 import { RecentList } from "@/components/RecentList";
@@ -37,6 +38,13 @@ export default async function HomePage(): Promise<ReactNode> {
           {"// type `help` to get started"}
         </p>
       </section>
+
+      <Box title="PORTRAIT">
+        <AsciiPortrait className="text-fg-dim mx-auto w-full max-w-lg" />
+        <p className="text-fg-muted mt-2 text-center text-xs">
+          {"// try `cat me.txt` in the terminal"}
+        </p>
+      </Box>
 
       <Box title="BIO">
         <ul className="flex flex-col gap-1 text-base">
