@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AsciiPortrait } from "@/components/AsciiPortrait";
 import { Box } from "@/components/Box";
 import { Field } from "@/components/Field";
 import { RecentList } from "@/components/RecentList";
@@ -25,16 +26,27 @@ export default async function HomePage(): Promise<ReactNode> {
   return (
     <div className="flex flex-col gap-8">
       <section>
-        <pre className="text-fg md:text-2xs overflow-x-auto overflow-y-hidden text-[9px] leading-[1.1] whitespace-pre sm:text-[11px]">
-          {banner}
-        </pre>
-        <p className="text-fg-dim mt-2 text-sm">
+        {/* Font size and line height live on the row so the portrait can be
+            sized in banner lines (lh): it spans the 7 rows of "James" and
+            sits 2 rows above the banner's bottom edge, clear of the "g". */}
+        <div className="flex items-end gap-4 text-[9px] leading-[1.1] sm:text-[11px]">
+          <div className="mb-[2lh] h-[7lh] w-[7lh] shrink-0">
+            <AsciiPortrait className="text-fg-dim h-full w-full" />
+          </div>
+          <pre className="text-fg min-w-0 flex-1 overflow-x-auto overflow-y-hidden whitespace-pre">
+            {banner}
+          </pre>
+        </div>
+        <p className="text-fg-dim mt-6 text-sm">
           <span className="text-fg-muted">$</span> whoami — software engineer /{" "}
-          {site.location} / building calm software.
+          {site.location} / Running, Fishing, Cars.
         </p>
         <Terminal fs={fs} user={site.handle} host={site.hostname} />
         <p className="text-fg-muted mt-1 text-xs">
           {"// type `help` to get started"}
+        </p>
+        <p className="text-fg-muted text-xs">
+          {"// try `cat me.txt` in the terminal"}
         </p>
       </section>
 

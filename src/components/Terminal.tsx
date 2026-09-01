@@ -22,7 +22,12 @@ type LsEntry = { name: string; isDir: boolean };
 
 type Line =
   | { kind: "prompt"; cwd: string[]; command: string }
-  | { kind: "text"; tone: "fg" | "dim" | "err"; content: string }
+  | {
+      kind: "text";
+      tone: "fg" | "dim" | "err";
+      content: string;
+      wrap?: boolean;
+    }
   | { kind: "ls"; entries: LsEntry[] };
 
 const COMMANDS: ReadonlyArray<{ name: string; help: string }> = [
@@ -199,6 +204,9 @@ export function Terminal({ fs, user, host }: TerminalProps): ReactNode {
               kind: "text",
               tone: "fg",
               content: file.content.replace(/\n$/, ""),
+              // .txt files are preformatted (ASCII art); wrapping would
+              // destroy them. Prose in .md files keeps soft-wrapping.
+              wrap: !file.name.endsWith(".txt"),
             });
           }
           return out;
@@ -372,11 +380,11 @@ function LineView({
       : line.tone === "dim"
         ? "text-fg-dim"
         : "text-fg";
+  const wrapClass =
+    line.wrap === false
+      ? "overflow-x-auto whitespace-pre"
+      : "wrap-break-word whitespace-pre-wrap";
   return (
-    <pre
-      className={`font-mono wrap-break-word whitespace-pre-wrap ${toneClass}`}
-    >
-      {line.content}
-    </pre>
+    <pre className={`font-mono ${wrapClass} ${toneClass}`}>{line.content}</pre>
   );
 }

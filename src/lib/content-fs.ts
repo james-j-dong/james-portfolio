@@ -14,6 +14,20 @@ export const PROJECTS_DIR: string = path.join(
   "projects",
 );
 
+export const PORTRAIT_FILE: string = path.join(
+  process.cwd(),
+  "src",
+  "content",
+  "portrait.txt",
+);
+
+export const ME_FILE: string = path.join(
+  process.cwd(),
+  "src",
+  "content",
+  "me.txt",
+);
+
 export function filenameToSlug(filename: string): string {
   return filename.replace(/\.md$/, "").replace(/^\d{4}-\d{2}-\d{2}-/, "");
 }
