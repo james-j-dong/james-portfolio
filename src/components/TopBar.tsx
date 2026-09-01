@@ -3,12 +3,9 @@ import pkg from "../../package.json";
 import { Clock } from "@/components/Clock";
 import { site } from "@/content/site";
 
-type NextPkg = { dependencies?: { next?: string } };
-
 function nextVersion(): string {
-  const deps = (pkg as NextPkg).dependencies ?? {};
-  const raw = deps.next ?? "";
-  return raw.replace(/^[^\d]*/, "");
+  const version = pkg.version ?? "1.0.0";
+  return version;
 }
 
 export function TopBar(): ReactNode {
@@ -19,7 +16,7 @@ export function TopBar(): ReactNode {
         {site.name} <span className="text-fg-dim">{"// PORTFOLIO"}</span>
       </span>
       <span className="text-fg-muted hidden md:inline">
-        HOST:{site.hostname} USER:visitor RUNTIME:next@{version}
+        HOST:{site.hostname} USER:visitor VERSION:{version}
       </span>
       <Clock />
     </header>

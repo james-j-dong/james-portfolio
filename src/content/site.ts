@@ -23,7 +23,7 @@ export const site: SiteConfig = {
   url: "https://jamesdong.dev",
   bio: [
     "Software engineer based in Austin, TX.",
-    "Building calm, fast software — tools that get out of the way.",
+    "Building cool (at least to me) software.",
   ],
   location: "Austin, TX",
   timezone: "America/Chicago",
