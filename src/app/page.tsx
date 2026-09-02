@@ -31,10 +31,12 @@ export default async function HomePage(): Promise<ReactNode> {
             sized in banner lines (lh): it spans the 7 rows of "James" and
             sits 2 rows above the banner's bottom edge, clear of the "g". */}
         <div className="flex items-end gap-4 text-[9px] leading-[1.1] sm:text-[11px]">
-          <div className="mb-[2lh] h-[7lh] w-[7lh] shrink-0">
+          {/* <div className="mb-[2lh] h-[7lh] w-[7lh] shrink-0"> */}
             {/* <AsciiPortrait className="text-fg-dim h-full w-full" /> */}
-              <PictureRenderer picturePath="/pictures/james-headshot.jpg" alt="Personal Portrait Picture of James Dong" />
-          </div>
+            <div className="mb-7.5">
+              <PictureRenderer picturePath="/pictures/james-headshot.jpg" preload={true} width={120} height={120} alt="Personal Portrait Picture of James Dong" />
+            </div>
+          {/* </div> */}
           <pre className="text-fg min-w-0 flex-1 overflow-x-auto overflow-y-hidden whitespace-pre">
             {banner}
           </pre>
