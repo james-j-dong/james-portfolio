@@ -1,10 +1,10 @@
 import path from "node:path";
 
-export const LOG_DIR: string = path.join(
+export const BLOG_DIR: string = path.join(
   process.cwd(),
   "src",
   "content",
-  "log",
+  "blog",
 );
 
 export const PROJECTS_DIR: string = path.join(

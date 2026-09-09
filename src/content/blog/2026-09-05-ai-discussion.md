@@ -20,4 +20,4 @@ So with respect to Harloop, my most recent projet/business, I think AI is sort o
 
 ## Closing Thoughts
 
-Shorter blog this time without any direction really. Just been a few years working with AI and just wanted to track my thoughts. Interested to see how things will change as it improves. As of today I use mostly Claude, specifically Fable 5.1 and Opus 5 with xhigh effort.
+Shorter blog this time without any direction really. Just been a few years working with AI and just wanted to track my thoughts. Interested to see how things will change as it improves. As of today I use mostly Claude, specifically Fable 5.1 and Opus 5 with high effort.

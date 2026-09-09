@@ -11,7 +11,7 @@ export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
 }
 
 export async function generateMetadata(
-  props: PageProps<"/log/[slug]">,
+  props: PageProps<"/blog/[slug]">,
 ): Promise<Metadata> {
   const { slug } = await props.params;
   const post = await getPost(slug);
@@ -22,14 +22,14 @@ export async function generateMetadata(
   };
 }
 
-export default async function LogPostPage(
-  props: PageProps<"/log/[slug]">,
+export default async function BlogPostPage(
+  props: PageProps<"/blog/[slug]">,
 ): Promise<ReactNode> {
   const { slug } = await props.params;
   const post = await getPost(slug);
   if (!post) notFound();
   return (
-    <Box title={`LOG/${post.slug.toUpperCase()}`}>
+    <Box title={`BLOG/${post.slug.toUpperCase()}`}>
       <Article post={post} />
     </Box>
   );
