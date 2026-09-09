@@ -5,14 +5,14 @@ import { PostsTable } from "@/components/PostsTable";
 import { listPostMeta } from "@/lib/posts";
 
 export const metadata: Metadata = {
-  title: "Log",
+  title: "Blog",
 };
 
-export default async function LogPage(): Promise<ReactNode> {
+export default async function BlogPage(): Promise<ReactNode> {
   const posts = await listPostMeta();
   return (
     <div className="flex flex-col gap-6">
-      <Box title="LOG/INDEX">
+      <Box title="BLOG/INDEX">
         <PostsTable posts={posts} />
       </Box>
       <p className="text-fg-muted text-xs">

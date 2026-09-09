@@ -14,7 +14,7 @@ type Tab = {
 const tabs: Tab[] = [
   { n: 1, label: "ABOUT", href: "/", match: (p) => p === "/" },
   { n: 2, label: "WORK", href: "/work", match: (p) => p.startsWith("/work") },
-  { n: 3, label: "LOG", href: "/log", match: (p) => p.startsWith("/log") },
+  { n: 3, label: "BLOG", href: "/blog", match: (p) => p.startsWith("/blog") },
   {
     n: 4,
     label: "CONTACT",

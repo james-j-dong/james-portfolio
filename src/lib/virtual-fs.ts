@@ -2,13 +2,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
 import { projects } from "@/content/projects";
-import {
-  LOG_DIR,
-  ME_FILE,
-  PROJECTS_DIR,
-  filenameToSlug,
-  isEnoent,
-} from "@/lib/content-fs";
+import { ME_FILE, PROJECTS_DIR, isEnoent } from "@/lib/content-fs";
+import { listVisibleBlogFiles } from "@/lib/posts";
 import type { Project } from "@/lib/types";
 
 export type VFile = { type: "file"; name: string; content: string };
@@ -31,25 +26,13 @@ function synthesizeProjectMarkdown(project: Project): string {
   return parts.join("\n");
 }
 
-async function readLogChildren(): Promise<VFile[]> {
-  let entries: string[];
-  try {
-    entries = await fs.readdir(LOG_DIR);
-  } catch (error) {
-    if (isEnoent(error)) return [];
-    throw error;
-  }
-  const files = entries.filter((f) => f.endsWith(".md"));
-  const out = await Promise.all(
-    files.map(async (filename): Promise<VFile> => {
-      const raw = await fs.readFile(path.join(LOG_DIR, filename), "utf8");
-      return {
-        type: "file",
-        name: `${filenameToSlug(filename)}.md`,
-        content: raw,
-      };
-    }),
-  );
+async function readBlogChildren(): Promise<VFile[]> {
+  const files = await listVisibleBlogFiles();
+  const out = files.map((file): VFile => ({
+    type: "file",
+    name: `${file.slug}.md`,
+    content: file.raw,
+  }));
   return out.sort((a, b) => a.name.localeCompare(b.name));
 }
 
@@ -88,13 +71,13 @@ async function readMeFile(): Promise<VFile | null> {
 }
 
 export const buildVirtualFs = cache(async (): Promise<VDir> => {
-  const [logChildren, workChildren, meFile] = await Promise.all([
-    readLogChildren(),
+  const [blogChildren, workChildren, meFile] = await Promise.all([
+    readBlogChildren(),
     readWorkChildren(),
     readMeFile(),
   ]);
   const children: VEntry[] = [
-    { type: "dir", name: "log", children: logChildren },
+    { type: "dir", name: "blog", children: blogChildren },
     { type: "dir", name: "work", children: workChildren },
   ];
   if (meFile) children.push(meFile);

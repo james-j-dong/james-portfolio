@@ -12,7 +12,8 @@ export function Article({ post }: ArticleProps): ReactNode {
     <article>
       <header className="border-fg-faint border-b pb-3">
         <div className="text-fg-muted flex flex-wrap gap-x-4 text-xs uppercase">
-          <span>LOG/{post.slug}</span>
+          <span>BLOG/{post.slug}</span>
+          {frontmatter.draft ? <span className="text-red">DRAFT</span> : null}
           <span>{frontmatter.date}</span>
           {frontmatter.tags.length > 0 ? (
             <span>TAGS: {frontmatter.tags.join(", ")}</span>
@@ -31,8 +32,8 @@ export function Article({ post }: ArticleProps): ReactNode {
         dangerouslySetInnerHTML={{ __html: html }}
       />
       <footer className="border-fg-faint text-fg-muted mt-8 border-t pt-3 text-xs">
-        <Link href="/log" className="text-fg-muted hover:text-red">
-          ← back to /log
+        <Link href="/blog" className="text-fg-muted hover:text-red">
+          ← back to /blog
         </Link>
       </footer>
     </article>

@@ -9,7 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     "",
     "/work",
-    "/log",
+    "/blog",
     "/contact",
   ].map((route) => ({
     url: `${site.url}${route}`,
@@ -20,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const postRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${site.url}/log/${post.slug}`,
+    url: `${site.url}/blog/${post.slug}`,
     lastModified: post.frontmatter.date,
   }));
 

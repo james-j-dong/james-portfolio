@@ -15,7 +15,7 @@ function mergeFeed(posts: PostMeta[], projects: Project[]): FeedItem[] {
     kind: "POST",
     name: p.frontmatter.title,
     tags: p.frontmatter.tags,
-    href: `/log/${p.slug}`,
+    href: `/blog/${p.slug}`,
   }));
   const projectItems: FeedItem[] = projects.map((p) => ({
     date: `${p.year}-01-01`,

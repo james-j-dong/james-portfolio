@@ -1,0 +1,12 @@
+[types.blog]
+template = "tools/pf/templates/blog.md"
+output_dir = "src/content/blog"
+filename = "${date}-${slug}.md"
+
+[types.blog.defaults]
+summary = ""
+
+[types.project]
+template = "tools/pf/templates/project.md"
+output_dir = "src/content/projects"
+filename = "${slug}.md"

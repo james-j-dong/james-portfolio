@@ -31,17 +31,20 @@ export function PostsTable({ posts }: PostsTableProps): ReactNode {
           {posts.map((post) => (
             <ClickableRow
               key={post.slug}
-              href={`/log/${post.slug}`}
+              href={`/blog/${post.slug}`}
               className="align-top"
             >
               <td className="text-fg-dim py-1 pr-2">{post.frontmatter.date}</td>
               <td className="py-1 pr-2">
                 <Link
-                  href={`/log/${post.slug}`}
+                  href={`/blog/${post.slug}`}
                   className="text-blue hover:text-red"
                 >
                   {post.frontmatter.title}
                 </Link>
+                {post.frontmatter.draft ? (
+                  <span className="text-red ml-2 text-xs uppercase">draft</span>
+                ) : null}
                 {post.frontmatter.summary ? (
                   <div className="text-fg-dim">{post.frontmatter.summary}</div>
                 ) : null}
